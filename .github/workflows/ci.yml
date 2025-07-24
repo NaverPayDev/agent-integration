@@ -1,0 +1,43 @@
+name: CI
+
+on:
+    pull_request:
+        branches:
+            - '**'
+
+jobs:
+    ci:
+        name: 🧪 CI
+        runs-on: ${{ github.server_url == 'https://github.com' && 'ubuntu-latest' || 'self-hosted' }}
+        steps:
+            - uses: actions/checkout@v4
+              with:
+                  fetch-depth: 0
+
+            - name: 🛠️ 환경 설정
+              if: github.server_url == 'https://github.com'
+              uses: ./.github/actions/setup-env
+
+            - name: 🧪 CI 수행
+              uses: ./.github/actions/run-ci
+
+            - name: 📋 Changeset 상태 확인
+              if: github.event_name == 'pull_request'
+              run: |
+                  changeset_files=$(git diff --name-only origin/${{ github.event.pull_request.base.ref }}...HEAD -- '.changeset/*.md' | grep -v 'README.md' || true)
+
+                  if [ -z "$changeset_files" ]; then
+                    echo "❌ changeset이 필요합니다!"
+                    echo ""
+                    echo "🔧 변경사항이 있는 경우:"
+                    echo "   pnpm changeset"
+                    echo ""
+                    echo "🔧 변경사항이 없는 경우 (문서, 설정 등):"
+                    echo "   pnpm changeset --empty"
+                    echo ""
+                    echo "💡 Changeset은 패키지 버전 관리와 릴리즈 노트 생성에 필요합니다."
+                    exit 1
+                  else
+                    echo "✅ changeset 확인"
+                    echo "$changeset_files" | sed 's/^/   - /'
+                  fi

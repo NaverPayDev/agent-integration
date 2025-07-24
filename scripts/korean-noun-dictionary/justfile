@@ -1,0 +1,34 @@
+@_:
+    just --list
+
+install:
+    uv sync --dev
+
+clean:
+    -uv cache clean
+    -find . -name "__pycache__" -exec rm -rf {} +
+    -find . -name "*.egg-info" -exec rm -rf {} +
+    -rm -rf .pytest_cache .ruff_cache
+
+fmt:
+    uv run ruff check --fix
+    uv run ruff format
+
+check:
+    uv run ruff check
+    uv run ruff format --check
+
+test *args:
+    uv run pytest {{ args }}
+
+notice:
+    uv run pip-licenses \
+        --format plain-vertical \
+        --with-license-file \
+        --no-license-path \
+        --packages $(grep -A 5 'dependencies = \[' pyproject.toml | grep '"' | sed 's/.*"\([^"]*\)".*/\1/' | cut -d'>' -f1 | cut -d'=' -f1 | cut -d'<' -f1 | tr '\n' ' ') \
+        --output-file NOTICE.md
+    @echo "NOTICE.md generated!"
+
+run *args:
+    uv run korean-noun-dictionary {{ args }}

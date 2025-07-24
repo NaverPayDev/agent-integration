@@ -1,0 +1,60 @@
+{
+    "name": "@naverpay/payments-mcp",
+    "version": "0.0.1",
+    "license": "Apache-2.0",
+    "description": "네이버페이(Npay) Payments MCP",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/NaverPayDev/agent-integration.git",
+        "directory": "packages/payments-mcp"
+    },
+    "keywords": [
+        "naver",
+        "npay",
+        "naverpay",
+        "naver-financial",
+        "mcp",
+        "model-context-protocol",
+        "ai",
+        "llm",
+        "agent",
+        "developer-tools"
+    ],
+    "sideEffects": false,
+    "type": "module",
+    "main": "./build/index.js",
+    "bin": {
+        "npay-payments-mcp": "./build/index.js"
+    },
+    "files": [
+        "build",
+        "README.md",
+        "CHANGELOG.md"
+    ],
+    "scripts": {
+        "clean": "rm -rf build",
+        "prebuild": "pnpm clean",
+        "build": "tsc && node -e \"require('fs').chmodSync('build/index.js', '755')\"",
+        "test": "vitest run --reporter=verbose",
+        "test:watch": "vitest watch --reporter=verbose",
+        "start": "concurrently 'pnpm run start:test-server' 'pnpm run start:inspector:dev'",
+        "start:inspector": "npx @modelcontextprotocol/inspector vite-node src/index.ts",
+        "start:inspector:dev": "NODE_ENV=development npx @modelcontextprotocol/inspector vite-node src/index.ts",
+        "start:test-server": "vite-node test/__helpers__/start-test-server.ts",
+        "notice": "npx generate-license-file --input package.json --output NOTICE.md --overwrite --ci --no-spinner --eol lf"
+    },
+    "devDependencies": {
+        "@types/express": "^5.0.3",
+        "@types/node": "^24.0.8",
+        "concurrently": "^9.2.0",
+        "express": "^5.1.0",
+        "generate-license-file": "^4.0.0",
+        "vite-node": "^3.2.4",
+        "vitest": "^3.2.4"
+    },
+    "dependencies": {
+        "@modelcontextprotocol/sdk": "^1.13.2",
+        "minisearch": "^7.1.2",
+        "zod": "^3.25.67"
+    }
+}

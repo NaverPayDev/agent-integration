@@ -1,0 +1,6 @@
+.changeset
+**/CHANGELOG.md
+apps/docs/**/*.md
+**/__fixtures__/**/*.md
+**/.pytest_cache/**.*md
+**/.venv/**.*md

@@ -1,0 +1,14 @@
+{
+    "name": "@naverpay/korean-noun-dictionary",
+    "version": "0.0.1",
+    "license": "Apache-2.0",
+    "private": true,
+    "scripts": {
+        "install": "just install",
+        "test": "just test",
+        "lint": "just check",
+        "lint:fix": "just fmt",
+        "clean": "just clean",
+        "notice": "just notice && just install"
+    }
+}

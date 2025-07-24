@@ -1,0 +1,71 @@
+name: 'Setup Environment'
+description: 'Setup Environment for Public GitHub'
+inputs:
+    node-version:
+        description: 'Node.js version to setup'
+        required: true
+        default: '22'
+    python-version:
+        description: 'Python version to setup'
+        required: true
+        default: '3.13'
+    java-version:
+        description: 'Java version to setup'
+        required: true
+        default: '11'
+    java-distribution:
+        description: 'Java distribution to use'
+        required: false
+        default: 'temurin'
+    setup-npm-auth:
+        description: 'Setup NPM authentication for publishing'
+        required: false
+        default: 'false'
+    npm-token:
+        description: 'NPM token for publishing'
+        required: false
+
+runs:
+    using: 'composite'
+    steps:
+        - name: Mask NPM token
+          if: inputs.setup-npm-auth == 'true' && inputs.npm-token != ''
+          shell: bash
+          run: |
+              echo "::add-mask::${{ inputs.npm-token }}"
+
+        - name: Setup Node.js (with NPM auth)
+          if: inputs.setup-npm-auth == 'true'
+          uses: actions/setup-node@v4
+          with:
+              node-version: ${{ inputs.node-version }}
+              registry-url: 'https://registry.npmjs.org/'
+              always-auth: true
+          env:
+              NODE_AUTH_TOKEN: ${{ inputs.npm-token }}
+
+        - name: Setup Node.js (without NPM auth)
+          if: inputs.setup-npm-auth != 'true'
+          uses: actions/setup-node@v4
+          with:
+              node-version: ${{ inputs.node-version }}
+
+        - name: Setup pnpm
+          uses: pnpm/action-setup@v4
+
+        - name: Setup Python
+          uses: actions/setup-python@v5
+          with:
+              python-version: ${{ inputs.python-version }}
+
+        - name: Install uv
+          uses: astral-sh/setup-uv@v4
+
+        - name: Install just
+          uses: extractions/setup-just@v2
+
+        - name: Setup Java
+          uses: actions/setup-java@v4
+          with:
+              java-version: ${{ inputs.java-version }}
+              distribution: ${{ inputs.java-distribution }}

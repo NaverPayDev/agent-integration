@@ -1,0 +1,1 @@
+아래의 네이버페이 API 서버는 IP 주소 기반 ACL(access control list)을 사용하지 않습니다.

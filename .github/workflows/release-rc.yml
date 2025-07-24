@@ -1,0 +1,81 @@
+name: Release RC
+
+on:
+    push:
+        branches:
+            - main
+
+concurrency:
+    group: release
+    cancel-in-progress: false
+
+jobs:
+    release-rc:
+        name: 🚀 Release RC
+        if: ${{ !contains(github.event.head_commit.message, '[skip release action]') }}
+        runs-on: ${{ github.server_url == 'https://github.com' && 'ubuntu-latest' || 'self-hosted' }}
+        permissions:
+            contents: write
+            packages: write
+        steps:
+            - uses: actions/checkout@v4
+              with:
+                  ref: main
+                  token: ${{ secrets.GITHUB_TOKEN }}
+                  fetch-depth: 0
+
+            - name: 🔐 마스킹
+              if: github.server_url == 'https://github.com'
+              run: echo "::add-mask::${{ secrets.NPM_TOKEN }}"
+
+            - name: 🛠️ 환경 설정
+              if: github.server_url == 'https://github.com'
+              uses: ./.github/actions/setup-env
+              with:
+                  setup-npm-auth: 'true'
+                  npm-token: ${{ secrets.NPM_TOKEN }}
+
+            - name: 🧪 CI 수행
+              uses: ./.github/actions/run-ci
+
+            - name: 🔧 Git 설정
+              run: |
+                  git config user.name "github-actions[bot]"
+                  git config user.email "github-actions[bot]@users.noreply.github.com"
+
+            - name: 📝 Commit RC 버전
+              run: |
+                  if [ ! -f ".changeset/pre.json" ]; then
+                    pnpm changeset pre enter rc
+                    echo "✅ Pre-release 활성화"
+                  else
+                    echo "ℹ️ 현재 Pre-release"
+                  fi
+
+                  pnpm changeset version
+                  pnpm install --frozen-lockfile
+                  pnpm notice
+
+                  if ! git diff --quiet; then
+                    git add .changeset/ 2>/dev/null || true
+                    git add packages/*/package.json 2>/dev/null || true
+                    git add packages/*/CHANGELOG.md 2>/dev/null || true
+                    git add packages/*/NOTICE.md 2>/dev/null || true
+                    git add scripts/*/package.json 2>/dev/null || true
+                    git add scripts/*/CHANGELOG.md 2>/dev/null || true
+                    git add scripts/*/NOTICE.md 2>/dev/null || true
+
+                    git commit -m "🚀 release: bump rc versions [skip release action]"
+                    
+                    if ! git push origin main; then
+                      echo "❌ 다른 변경사항이 추가되어 다음 배포에서 함께 처리됩니다."
+                      exit 1
+                    fi
+                    echo "✅ Commit RC 버전"
+                  else
+                    echo "ℹ️ 업데이트할 내용이 없습니다"
+                  fi
+
+            - name: 🚀 RC 버전 배포
+              run: |
+                  pnpm release:canary

@@ -1,0 +1,57 @@
+{
+    "name": "@naverpay/agent-integration",
+    "author": "@NaverPayDev/agent",
+    "private": true,
+    "license": "Apache-2.0",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/NaverPayDev/agent-integration.git"
+    },
+    "description": "AI agent integration toolkit for Npay",
+    "keywords": [
+        "naver",
+        "npay",
+        "naverpay",
+        "naver-financial",
+        "ai-agent",
+        "llm-integration",
+        "developer-tools",
+        "typescript",
+        "monorepo"
+    ],
+    "scripts": {
+        "start": "turbo run start",
+        "build": "turbo run build",
+        "test": "turbo run test",
+        "lint": "turbo run lint && eslint '**/*.{js,jsx,ts,tsx}'",
+        "lint:fix": "turbo run lint:fix && eslint '**/*.{js,jsx,ts,tsx}' --fix",
+        "prettier": "prettier --check '**/*.{json,yaml,md,ts,tsx,js,jsx}'",
+        "prettier:fix": "prettier --write '**/*.{json,yaml,md,ts,tsx,js,jsx}'",
+        "markdownlint": "markdownlint '**/*.md' '#.changeset' '#**/CHANGELOG.md' '#**/NOTICE.md' '#**/__fixtures__/**/*.md' '#**/.pytest_cache/**.*md' '#**/.venv/**.*md'",
+        "markdownlint:fix": "markdownlint --fix '**/*.md' '#.changeset' '#**/CHANGELOG.md' '#**/NOTICE.md' '#**/__fixtures__/**/*.md' '#**/.pytest_cache/**.*md' '#**/.venv/**.*md'",
+        "clean": "turbo run clean && rm -rf ./node_modules && pnpm i",
+        "release:canary": "pnpm run build && changeset publish --no-git-tag",
+        "release": "pnpm run build && changeset publish",
+        "notice": "turbo run notice"
+    },
+    "lint-staged": {
+        "**/*.{json,yaml,md,ts,tsx,js,jsx}": "prettier --check",
+        "**/*.{ts,tsx,js,jsx}": "eslint"
+    },
+    "devDependencies": {
+        "eslint": "^8.57.0",
+        "@changesets/cli": "^2.27.9",
+        "@naverpay/eslint-config": "^1.0.7",
+        "@naverpay/markdown-lint": "^0.0.3",
+        "@naverpay/prettier-config": "^1.0.0",
+        "lefthook": "^1.8.2",
+        "lint-staged": "^15.2.10",
+        "turbo": "^2.2.3",
+        "typescript": "^5.6.3"
+    },
+    "packageManager": "pnpm@9.12.3",
+    "engines": {
+        "node": "22.11.0",
+        "pnpm": "9.12.3"
+    }
+}

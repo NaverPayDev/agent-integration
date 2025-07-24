@@ -1,0 +1,23 @@
+[project]
+name = "korean-noun-dictionary"
+version = "1.0.0"
+license = {text = "Apache-2.0"}
+description = "한국어 명사 사전 구축"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "pykomoran>=0.1.6.post1",
+]
+
+[dependency-groups]
+dev = [
+    "pip-licenses>=5.0.0",
+    "pytest>=8.4.1",
+    "ruff>=0.12.2",
+]
+
+[project.scripts]
+korean-noun-dictionary = "korean_noun_dictionary.main:main"
+
+[tool.uv]
+package = true

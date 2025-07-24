@@ -1,0 +1,354 @@
+# NaverPay Developer center
+
+> NaverPay Developer center provides API documents, design guidelines, and technical support for developers.
+
+
+## docs
+
+
+### common
+
+- [인증](http://localhost:3000/developers/docs/common/authentication.md): 이 문서는 네이버페이 API 인증 방식과 요청 헤더 구성 방법을 안내합니다.
+- [하위 호환성](http://localhost:3000/developers/docs/common/backward-compatibility.md): 이 문서는 네이버페이 API의 하위 호환성 정책과 변경 기준을 안내합니다.
+- [변경 이력](http://localhost:3000/developers/docs/common/change-log.md): 이 문서는 네이버페이 API의 변경 이력과 주요 업데이트 사항을 안내합니다.
+- [방화벽](http://localhost:3000/developers/docs/common/firewall.md): 이 문서는 네이버페이 API 연동 시 필요한 방화벽 설정 방법을 안내합니다.
+- [HTTP Status Code](http://localhost:3000/developers/docs/common/http-status-code.md): 이 문서는 네이버페이 API에서 사용하는 HTTP 상태 코드와 의미를 안내합니다.
+- [API 멱등성](http://localhost:3000/developers/docs/common/idempotency.md): 이 문서는 네이버페이 API의 멱등성 처리 방식과 관련 헤더 사용법을 안내합니다.
+- [온라인 결제 연동 개요](http://localhost:3000/developers/docs/common/online-payment-overview.md): 이 문서는 온라인 결제 연동의 전체적인 개요와 주요 흐름을 안내합니다.
+- [플랫폼 지원환경](http://localhost:3000/developers/docs/common/platform-support.md): 이 문서는 네이버페이 API의 지원 플랫폼 및 브라우저 환경을 안내합니다.
+- [기본 응답 형식](http://localhost:3000/developers/docs/common/response-format.md): 이 문서는 네이버페이 API의 기본 응답 데이터 구조와 예시를 안내합니다.
+- [API URL 형식](http://localhost:3000/developers/docs/common/url-format.md): 이 문서는 네이버페이 API의 URL 형식과 호출 규칙을 안내합니다.
+
+---
+
+# Full Documentation Content
+
+# 인증
+
+## 인증[​](#인증 "인증에 대한 직접 링크")
+
+### 인증방법[​](#인증방법 "인증방법에 대한 직접 링크")
+
+네이버페이 API는 인증에 API key 를 사용합니다.<br /><!-- -->클라이언트 ID, 네이버페이 체인 ID와 클라이언트 시크릿를 발급받아 API 요청 시 요청 헤더에 다음과 같이 입력하며 TLS 1.2 이상으로 사용하여 암호화합니다.
+
+요청 헤더
+
+```
+X-Naver-Client-Id: {Client ID}
+X-Naver-Client-Secret: {Client Secret}
+X-NaverPay-Chain-Id: {Chain ID}
+X-NaverPay-Financial-Id: {Financial Id}
+```
+
+클라이언트 시크릿은 보안상 노출되면 안 되는 값입니다.<br /><!-- -->따라서 클라이언트 바이너리 등에 저장하면 안 됩니다. 외부에 노출된 경우 해당 값에 대한 인증을 무효화하고 새로 발급받아 사용해야 합니다.
+
+인증 유형에 따라 `X-NaverPay-Financial-Id` 헤더가 필수일 수도 있습니다.
+
+API 테스트 툴 (Postman, Insomnia 등) 사용 시 외부에 Client ID, Client Secret, Chain ID 값이 유출되지 않도록 주의 부탁드립니다.
+
+네이버페이 API 서버는 IP 주소 기반 ACL(access control list)을 사용하지 않습니다.
+
+
+---
+
+# 하위 호환성
+
+## 하위 호환성[​](#하위-호환성 "하위 호환성에 대한 직접 링크")
+
+### 하위 호환성 ( Backwards Compatibility )[​](#하위-호환성--backwards-compatibility- "하위 호환성 ( Backwards Compatibility )에 대한 직접 링크")
+
+네이버페이 API 의 버전 변경 정책 및 변경의 기준을 이해하고, 사용 및 운영에 문제가 없도록 설명한다.
+
+1. 하위 호환 준수 변경에 대해서는 제공되는 API 의 버전 변경 없이 진행된다.
+2. 하위 호환 미준수 변경에 대해서는 새롭게 버저닝하거나, 신규 API URI 를 통해 제공된다.
+
+#### 1. 하위 호환 준수 변경 기준 (Backwards-compatible (non-breaking) changes)[​](#1-하위-호환-준수-변경-기준-backwards-compatible-non-breaking-changes "1. 하위 호환 준수 변경 기준 (Backwards-compatible (non-breaking) changes)에 대한 직접 링크")
+
+* 신규 API 추가
+* API에 메소드 추가
+* HTTP binding 을 메소드에 추가
+* Request message 필드 추가
+* Response message 필드 추가
+* Enum value 추가
+
+#### 2. 하위 호환 미준수 변경 기준 (Backwards-incompatible (breaking) changes)[​](#2-하위-호환-미준수-변경-기준-backwards-incompatible-breaking-changes "2. 하위 호환 미준수 변경 기준 (Backwards-incompatible (breaking) changes)에 대한 직접 링크")
+
+* API URI, 필드, 메소드, Enum 의 삭제, 이름 변경
+* HTTP binding 변경
+* 필드 타입의 변경
+* 버전이 변경된 경우
+* 리소스 또는 필드의 이름, 포맷의 변경
+* 이미 존재하는 요청 동작의 visible 변경 ( API 접근 권한의 변경 )
+* Request message 구조 변경
+* Response message 구조 변경
+
+#### 3. 클라이언트 하위 호환 필수 설정 가이드[​](#3-클라이언트-하위-호환-필수-설정-가이드 "3. 클라이언트 하위 호환 필수 설정 가이드에 대한 직접 링크")
+
+특히 Java 를 예로 들어 설명하면, Jackson 의 경우 Object mapper 에서 default 설정을 사용하게 되면 필드가 추가되었을 때 이를 처리 하지 못한다. 다음과 같이 설정하여, 네이버페이 API 의 필드 추가 등의 변경에 영향이 발생하지 않도록 설정해야 한다.
+
+##### Java Object Mapper 설정[​](#java-object-mapper-설정 "Java Object Mapper 설정에 대한 직접 링크")
+
+```
+// jackson 1.9 and before
+objectMapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+// or jackson 2.0
+objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+```
+
+
+---
+
+# 변경 이력
+
+## API 멱등성[​](#api-멱등성 "API 멱등성에 대한 직접 링크")
+
+### API 멱등성[​](#api-멱등성-1 "API 멱등성에 대한 직접 링크")
+
+안전하게 API 요청을 재시도할 수 있도록 멱등성을 지원합니다.<br /><!-- -->API 요청 시, 유니크한 멱등성 키를 생성하여 요청 헤더에 다음과 같이 입력합니다. API 멱등성 지원 여부는 API 별로 명시되어 있습니다.
+
+요청 헤더
+
+```
+X-NaverPay-Idempotency-Key: {Idempotency Key}
+```
+
+요청 시 전달한 멱등성 키는, API 응답 헤더를 통해 전달 받을수 있습니다.<br /><!-- -->API 중복 요청 발생 시, HTTP Status 409 conflict 와 함께 이전 요청에서 전달되었던 응답이 재전달됩니다.
+
+응답 헤더
+
+```
+X-NaverPay-Idempotency-Key: {Idempotency Key}
+```
+
+멱등성 키는 반드시 유니크한 값을 생성하여 전달하며, 64자 이내의 문자열로 제한됩니다.<br /><!-- -->다음과 같이, 각 언어별로 제공되는 고유번호 생성 함수를 사용하고, 생성된 값은 알파벳 대소문자(A-Z, a-z), 숫자(0-9), 언더바(\_), 하이픈(-) 만을 포함하도록 권장합니다.
+
+### API 멱등성 키 생성[​](#api-멱등성-키-생성 "API 멱등성 키 생성에 대한 직접 링크")
+
+| 언어    | 추천 함수                                                                                                                                |
+| ------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| Ruby    | [`SecureRandom.uuid`](https://ruby-doc.org/stdlib-2.5.0/libdoc/securerandom/rdoc/Random/Formatter.html#method-i-uuid)                    |
+| PHP     | [`uniqid`](http://php.net/manual/en/function.uniqid.php)                                                                                 |
+| Java    | [`UUID.randomUUID`](http://docs.oracle.com/javase/7/docs/api/java/util/UUID.html)                                                        |
+| Python  | uuid ([`Python 2`](https://docs.python.org/2/library/uuid.html), [`Python 3`](https://docs.python.org/3.1/library/uuid.html)             |
+| C#      | [`Guid.NewGuid`](https://learn.microsoft.com/en-us/dotnet/api/system.guid.newguid?redirectedfrom=MSDN\&view=net-7.0#System_Guid_NewGuid) |
+| Node.js | [`uuid`](https://www.npmjs.com/package/uuid)                                                                                             |
+
+
+---
+
+# 방화벽
+
+## 방화벽[​](#방화벽 "방화벽에 대한 직접 링크")
+
+### 방화벽[​](#방화벽-1 "방화벽에 대한 직접 링크")
+
+가맹점은 가맹점에서 네이버페이 서버로 나가는 호출인 아웃바운드 트래픽에 대해 다음과 같이 가맹점 서버의 방화벽을 설정합니다.
+
+**방화벽 가이드**
+
+443 port 허용
+
+
+---
+
+# HTTP Status Code
+
+## HTTP Status Code[​](#http-status-code "HTTP Status Code에 대한 직접 링크")
+
+### HTTP Status Code Summary[​](#http-status-code-summary "HTTP Status Code Summary에 대한 직접 링크")
+
+| HTTP Status Code | 설명                                                                                               |
+| ---------------- | -------------------------------------------------------------------------------------------------- |
+| 200              | OK, 요청이 성공한 경우                                                                             |
+| 400              | Bad Request, 요청을 처리할 수 없는 경우                                                            |
+| 401              | Unauthorized, 인증키가 잘못된 경우                                                                 |
+| 404              | Not Found, 요청 resource 가 존재하지 않는 경우                                                     |
+| 409              | Conflict, 중복된 요청인 경우 ([API 멱등성 참조](http://localhost:3000/developers/docs/common/idempotency.md)) |
+| 503              | Service Unavailable, 서비스 점검중인 경우                                                          |
+| 5xx              | Server Errors, 네이버페이 서버에 오류가 있는 경우 ( 매우 드물게 발생 )                             |
+
+
+---
+
+# API 멱등성
+
+## API 멱등성[​](#api-멱등성 "API 멱등성에 대한 직접 링크")
+
+### API 멱등성[​](#api-멱등성-1 "API 멱등성에 대한 직접 링크")
+
+안전하게 API 요청을 재시도할 수 있도록 멱등성을 지원합니다.<br /><!-- -->API 요청 시, 유니크한 멱등성 키를 생성하여 요청 헤더에 다음과 같이 입력합니다. API 멱등성 지원 여부는 API 별로 명시되어 있습니다.
+
+요청 헤더
+
+```
+X-NaverPay-Idempotency-Key: {Idempotency Key}
+```
+
+요청 시 전달한 멱등성 키는, API 응답 헤더를 통해 전달 받을수 있습니다.<br /><!-- -->API 중복 요청 발생 시, HTTP Status 409 conflict 와 함께 이전 요청에서 전달되었던 응답이 재전달됩니다.
+
+응답 헤더
+
+```
+X-NaverPay-Idempotency-Key: {Idempotency Key}
+```
+
+멱등성 키는 반드시 유니크한 값을 생성하여 전달하며, 64자 이내의 문자열로 제한됩니다.<br /><!-- -->다음과 같이, 각 언어별로 제공되는 고유번호 생성 함수를 사용하고, 생성된 값은 알파벳 대소문자(A-Z, a-z), 숫자(0-9), 언더바(\_), 하이픈(-) 만을 포함하도록 권장합니다.
+
+### API 멱등성 키 생성[​](#api-멱등성-키-생성 "API 멱등성 키 생성에 대한 직접 링크")
+
+| 언어    | 추천 함수                                                                                                                                |
+| ------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| Ruby    | [`SecureRandom.uuid`](https://ruby-doc.org/stdlib-2.5.0/libdoc/securerandom/rdoc/Random/Formatter.html#method-i-uuid)                    |
+| PHP     | [`uniqid`](http://php.net/manual/en/function.uniqid.php)                                                                                 |
+| Java    | [`UUID.randomUUID`](http://docs.oracle.com/javase/7/docs/api/java/util/UUID.html)                                                        |
+| Python  | uuid ([`Python 2`](https://docs.python.org/2/library/uuid.html), [`Python 3`](https://docs.python.org/3.1/library/uuid.html)             |
+| C#      | [`Guid.NewGuid`](https://learn.microsoft.com/en-us/dotnet/api/system.guid.newguid?redirectedfrom=MSDN\&view=net-7.0#System_Guid_NewGuid) |
+| Node.js | [`uuid`](https://www.npmjs.com/package/uuid)                                                                                             |
+
+
+---
+
+# 온라인 결제 연동 개요
+
+## 결제 연동 체험하기[​](#결제-연동-체험하기 "결제 연동 체험하기에 대한 직접 링크")
+
+![샘플이미지](/assets/images/sample-3320f0d7efe8e40d9570869a456ce45d.png)
+
+
+---
+
+## 플랫폼 지원환경[​](#플랫폼-지원환경 "플랫폼 지원환경에 대한 직접 링크")
+
+### 플랫폼 지원환경[​](#플랫폼-지원환경-1 "플랫폼 지원환경에 대한 직접 링크")
+
+플랫폼 지원환경은 다음과 같습니다.
+
+* PC 환경에서는 Edge, Chrome, Firefox, Safari 브라우저를 지원합니다.
+* 모바일 환경에서는 NaverApp, Chrome, Safari, Android 기본 브라우저를 지원합니다.
+* Windows Safari는 Apple사 지원이 종료됨에 따라 더이상 지원하지 않습니다.(2018.09.24)
+
+### PC 지원 환경[​](#pc-지원-환경 "PC 지원 환경에 대한 직접 링크")
+
+| Edge | Chrome | Firefox | Safari      |
+| ---- | ------ | ------- | ----------- |
+| O    | O      | O       | O ( MacOS ) |
+
+### 모바일 지원 환경[​](#모바일-지원-환경 "모바일 지원 환경에 대한 직접 링크")
+
+| NaverApp | Chrome | Safari | Android Basic Browser |
+| -------- | ------ | ------ | --------------------- |
+| O        | O      | O      | O                     |
+
+### 가맹점 Android 어플리케이션 지원환경[​](#가맹점-android-어플리케이션-지원환경 "가맹점 Android 어플리케이션 지원환경에 대한 직접 링크")
+
+**DOM Storage API 활성화**
+
+네이버페이는 Web Storage API 를 사용하고 있습니다.<br /><!-- -->따라서 가맹점에서 제공하는 안드로이드 애플리케이션의 [WebSettings > DOM storage API](https://developer.android.com/reference/android/webkit/WebSettings#setDomStorageEnabled\(boolean\)) 활성화가 필요합니다.
+
+#### WebView 설정[​](#webview-설정 "WebView 설정에 대한 직접 링크")
+
+```
+webView.getSettings().setDomStorageEnabled(true) // default value is "false"
+```
+
+
+---
+
+# 기본 응답 형식
+
+## 기본 응답 형식[​](#기본-응답-형식 "기본 응답 형식에 대한 직접 링크")
+
+네이버페이 간편결제 API의 기본 응답 형식은 다음과 같습니다.
+
+기본 응답 형식
+
+```
+{
+    "code" : "Success",
+    "message" : "성공",
+    "body" : {}
+}
+```
+
+##### 기본 응답 필드[​](#기본-응답-필드 "기본 응답 필드에 대한 직접 링크")
+
+| 필드명                    | 타입     | 최대크기  | 필수여부                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | 필드명                                                                                                                      |
+| ------------------------- | -------- | --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| String                    | String   | 50바이트  | ![필수](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAWCAYAAADEtGw7AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAG+SURBVHgBtZW/S0JRFMfPqyiMIsEQBPu1hEODOQfZYKuutaT0B5RDNGZjNOg/INnkqqtLDs7h0FAtWQZCZQiFghD1vjfv8/refb6n4hdEfe++zzn3nu85T/lVRWPQlNmNxk+TruslKn49ULn1QpX2B7vudyzT6vQiRZybdODaMnucFFnGucYtxZ7TDN5PCJDwhKUBDOD4a5ZSbwUaRAlPhM7UAKImxD/ntfzAUAau5ShezcrBGfU8sWBYpd4L7AgNYGQ7qsS6MDCy5VW3q6uVQ3rauCTn5Kx2jTtJA+eFLdhR0rtHUdUJgIpgqPh93wVX2nXbUFT/2L3Lstt5vDDstNysdsFoAL2O3CH20UNhLQhQ2XM8kGnnAcC3isKKUBRJBhXFMkYH6cV9CdjN+mkPNNMpkExoeQ3sdywZFmQ+SxSrpNnv4JzPFpQlOePqgoPzPukiDse5odWtoFB4IcC+2axAhdfuTiyHjpVwpPC2ljEKBMOPKnEQaS0dcQZUf4ZoWAEaFcZnz3RLevcN48+O4HfuGi7poEeR4F2r+cGPELvVS+n3zkMAzBEEKLf+WxUFgj23VSfxeSGTMq6X6R+4ftHMqkptaQAAAABJRU5ErkJggg==) | 네이버페이 결제번호                                                                                                         |
+| merchantPayTransactionKey | String   | 128바이트 | ![필수](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAWCAYAAADEtGw7AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAG+SURBVHgBtZW/S0JRFMfPqyiMIsEQBPu1hEODOQfZYKuutaT0B5RDNGZjNOg/INnkqqtLDs7h0FAtWQZCZQiFghD1vjfv8/refb6n4hdEfe++zzn3nu85T/lVRWPQlNmNxk+TruslKn49ULn1QpX2B7vudyzT6vQiRZybdODaMnucFFnGucYtxZ7TDN5PCJDwhKUBDOD4a5ZSbwUaRAlPhM7UAKImxD/ntfzAUAau5ShezcrBGfU8sWBYpd4L7AgNYGQ7qsS6MDCy5VW3q6uVQ3rauCTn5Kx2jTtJA+eFLdhR0rtHUdUJgIpgqPh93wVX2nXbUFT/2L3Lstt5vDDstNysdsFoAL2O3CH20UNhLQhQ2XM8kGnnAcC3isKKUBRJBhXFMkYH6cV9CdjN+mkPNNMpkExoeQ3sdywZFmQ+SxSrpNnv4JzPFpQlOePqgoPzPukiDse5odWtoFB4IcC+2axAhdfuTiyHjpVwpPC2ljEKBMOPKnEQaS0dcQZUf4ZoWAEaFcZnz3RLevcN48+O4HfuGi7poEeR4F2r+cGPELvVS+n3zkMAzBEEKLf+WxUFgj23VSfxeSGTMq6X6R+4ftHMqkptaQAAAABJRU5ErkJggg==) | 가맹점의 결제 트랜잭션 번호 또는 주문 트랜잭션 번호                                                                         |
+| cancelAmount              | Number   |           |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     | 취소 요청 금액                                                                                                              |
+| cancelReason              | String   | 256바이트 | ![필수](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAWCAYAAADEtGw7AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAG+SURBVHgBtZW/S0JRFMfPqyiMIsEQBPu1hEODOQfZYKuutaT0B5RDNGZjNOg/INnkqqtLDs7h0FAtWQZCZQiFghD1vjfv8/refb6n4hdEfe++zzn3nu85T/lVRWPQlNmNxk+TruslKn49ULn1QpX2B7vudyzT6vQiRZybdODaMnucFFnGucYtxZ7TDN5PCJDwhKUBDOD4a5ZSbwUaRAlPhM7UAKImxD/ntfzAUAau5ShezcrBGfU8sWBYpd4L7AgNYGQ7qsS6MDCy5VW3q6uVQ3rauCTn5Kx2jTtJA+eFLdhR0rtHUdUJgIpgqPh93wVX2nXbUFT/2L3Lstt5vDDstNysdsFoAL2O3CH20UNhLQhQ2XM8kGnnAcC3isKKUBRJBhXFMkYH6cV9CdjN+mkPNNMpkExoeQ3sdywZFmQ+SxSrpNnv4JzPFpQlOePqgoPzPukiDse5odWtoFB4IcC+2axAhdfuTiyHjpVwpPC2ljEKBMOPKnEQaS0dcQZUf4ZoWAEaFcZnz3RLevcN48+O4HfuGi7poEeR4F2r+cGPELvVS+n3zkMAzBEEKLf+WxUFgj23VSfxeSGTMq6X6R+4ftHMqkptaQAAAABJRU5ErkJggg==) | 최소 사유                                                                                                                   |
+| cancelReason              | `String` | 1바이트   | ![필수](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAWCAYAAADEtGw7AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAG+SURBVHgBtZW/S0JRFMfPqyiMIsEQBPu1hEODOQfZYKuutaT0B5RDNGZjNOg/INnkqqtLDs7h0FAtWQZCZQiFghD1vjfv8/refb6n4hdEfe++zzn3nu85T/lVRWPQlNmNxk+TruslKn49ULn1QpX2B7vudyzT6vQiRZybdODaMnucFFnGucYtxZ7TDN5PCJDwhKUBDOD4a5ZSbwUaRAlPhM7UAKImxD/ntfzAUAau5ShezcrBGfU8sWBYpd4L7AgNYGQ7qsS6MDCy5VW3q6uVQ3rauCTn5Kx2jTtJA+eFLdhR0rtHUdUJgIpgqPh93wVX2nXbUFT/2L3Lstt5vDDstNysdsFoAL2O3CH20UNhLQhQ2XM8kGnnAcC3isKKUBRJBhXFMkYH6cV9CdjN+mkPNNMpkExoeQ3sdywZFmQ+SxSrpNnv4JzPFpQlOePqgoPzPukiDse5odWtoFB4IcC+2axAhdfuTiyHjpVwpPC2ljEKBMOPKnEQaS0dcQZUf4ZoWAEaFcZnz3RLevcN48+O4HfuGi7poEeR4F2r+cGPELvVS+n3zkMAzBEEKLf+WxUFgj23VSfxeSGTMq6X6R+4ftHMqkptaQAAAABJRU5ErkJggg==) | 취소 요청자 구분이 애매한 경우 가맹점 관리자로 입력합니다                                                                   |
+| taxExScopeAmount          | `String` |           | ![필수](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAWCAYAAADEtGw7AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAG+SURBVHgBtZW/S0JRFMfPqyiMIsEQBPu1hEODOQfZYKuutaT0B5RDNGZjNOg/INnkqqtLDs7h0FAtWQZCZQiFghD1vjfv8/refb6n4hdEfe++zzn3nu85T/lVRWPQlNmNxk+TruslKn49ULn1QpX2B7vudyzT6vQiRZybdODaMnucFFnGucYtxZ7TDN5PCJDwhKUBDOD4a5ZSbwUaRAlPhM7UAKImxD/ntfzAUAau5ShezcrBGfU8sWBYpd4L7AgNYGQ7qsS6MDCy5VW3q6uVQ3rauCTn5Kx2jTtJA+eFLdhR0rtHUdUJgIpgqPh93wVX2nXbUFT/2L3Lstt5vDDstNysdsFoAL2O3CH20UNhLQhQ2XM8kGnnAcC3isKKUBRJBhXFMkYH6cV9CdjN+mkPNNMpkExoeQ3sdywZFmQ+SxSrpNnv4JzPFpQlOePqgoPzPukiDse5odWtoFB4IcC+2axAhdfuTiyHjpVwpPC2ljEKBMOPKnEQaS0dcQZUf4ZoWAEaFcZnz3RLevcN48+O4HfuGi7poEeR4F2r+cGPELvVS+n3zkMAzBEEKLf+WxUFgj23VSfxeSGTMq6X6R+4ftHMqkptaQAAAABJRU5ErkJggg==) | 취소 요청자 구분이 애매한 경우 가맹점 관리자로 입력합니다<br />과제 대상 금액 + 면세 대상 금액 + 컵 보증금 대상 금액 (옵션) |
+| taxExScopeAmount          | String   |           | ![필수](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAWCAYAAADEtGw7AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAG+SURBVHgBtZW/S0JRFMfPqyiMIsEQBPu1hEODOQfZYKuutaT0B5RDNGZjNOg/INnkqqtLDs7h0FAtWQZCZQiFghD1vjfv8/refb6n4hdEfe++zzn3nu85T/lVRWPQlNmNxk+TruslKn49ULn1QpX2B7vudyzT6vQiRZybdODaMnucFFnGucYtxZ7TDN5PCJDwhKUBDOD4a5ZSbwUaRAlPhM7UAKImxD/ntfzAUAau5ShezcrBGfU8sWBYpd4L7AgNYGQ7qsS6MDCy5VW3q6uVQ3rauCTn5Kx2jTtJA+eFLdhR0rtHUdUJgIpgqPh93wVX2nXbUFT/2L3Lstt5vDDstNysdsFoAL2O3CH20UNhLQhQ2XM8kGnnAcC3isKKUBRJBhXFMkYH6cV9CdjN+mkPNNMpkExoeQ3sdywZFmQ+SxSrpNnv4JzPFpQlOePqgoPzPukiDse5odWtoFB4IcC+2axAhdfuTiyHjpVwpPC2ljEKBMOPKnEQaS0dcQZUf4ZoWAEaFcZnz3RLevcN48+O4HfuGi7poEeR4F2r+cGPELvVS+n3zkMAzBEEKLf+WxUFgj23VSfxeSGTMq6X6R+4ftHMqkptaQAAAABJRU5ErkJggg==) | 취소 요청자 구분이 애매한 경우 가맹점 관리자로 입력합니다<br />과제 대상 금액 + 면세 대상 금액 + 컵 보증금 대상 금액 (옵션) |
+
+***
+
+| 필드명  | 타입            | 필수 여부 | 설명        |
+| ------- | --------------- | --------- | ----------- |
+| code    | String of Codes | O         | 결과 코드   |
+| message | String          | O         | 상세 메시지 |
+| body    | Object          |           |             |
+
+##### 결과 코드[​](#결과-코드 "결과 코드에 대한 직접 링크")
+
+| 코드값           | 타입   | 설명               |
+| ---------------- | ------ | ------------------ |
+| Success          | String | 성공               |
+| RequireParameter | String | 필수 파라메터 누락 |
+| Fail             | String | 실패               |
+
+| 코드값           | 타입   | 설명                          | 설명        |
+| ---------------- | ------ | ----------------------------- | ----------- |
+| Success          | String | 성공                          | 결과 코드   |
+| RequireParameter | String | 필수 파라미터 누락            | 상세 메시지 |
+| InvalidParameter | String | 입력값이 조건을 만족하지 않음 |             |
+| Fail             | String | 기타 실패                     |             |
+
+
+---
+
+# API URL 형식
+
+## API URL 형식[​](#api-url-형식 "API URL 형식에 대한 직접 링크")
+
+### Back-end API 서버 URL 형식[​](#back-end-api-서버-url-형식 "Back-end API 서버 URL 형식에 대한 직접 링크")
+
+네이버페이 간편결제 API의 URL 형식은 다음과 같습니다.
+
+URL
+
+```
+https://{API 도메인}/{파트너 ID}/naverpay/payments/{API 버전}/{API명}
+```
+
+위험
+
+반드시 HTTPS로 호출해야 합니다.
+
+API 서버 도메인은 다음과 같습니다.
+
+* 개발 API 서버 : dev.apis.naver.com
+* 운영 API 서버 : apis.naver.com
+
+### Front-end API 서버 URL 형식[​](#front-end-api-서버-url-형식 "Front-end API 서버 URL 형식에 대한 직접 링크")
+
+네이버페이 간편결제 API에서 사용하는 결제 페이지의 주소는 다음과 같습니다.
+
+URL
+
+```
+https://{네이버페이 서비스 도메인}/payments/{결제 예약 ID}
+```
+
+네이버페이 서비스 도메인은 다음과 같습니다.
+
+* 개발용 서비스 서버 도메인 : test-m.pay.naver.com
+* 운영 서비스 서버 도메인 : m.pay.naver.com
+
+
+---
+
+헤딩 없는 문서
+
+---
