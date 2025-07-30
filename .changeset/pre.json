@@ -1,0 +1,11 @@
+{
+  "mode": "pre",
+  "tag": "rc",
+  "initialVersions": {
+    "@naverpay/payments-mcp": "0.0.1",
+    "@naverpay/korean-noun-dictionary": "0.0.1"
+  },
+  "changesets": [
+    "tidy-bags-eat"
+  ]
+}
