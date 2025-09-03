@@ -1,5 +1,11 @@
 # @naverpay/korean-noun-dictionary
 
+## 1.0.1
+
+### Patch Changes
+
+-   34a703e: 프로젝트 명을 'agent-payments-integration'으로 변경합니다.
+
 ## 1.0.1-rc.0
 
 ### Patch Changes
