@@ -2,7 +2,7 @@
 
 ## 🤝 기여하기
 
-Npay Agent Integration 프로젝트에 기여해 주셔서 감사합니다!
+Npay Payments Agent Integration 프로젝트에 기여해 주셔서 감사합니다!
 
 ## 개발 프로세스
 
