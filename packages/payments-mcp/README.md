@@ -43,7 +43,7 @@ Npay Payments MCP(Model Context Protocol)는 AI 에이전트가 네이버페이�
 
 키워드로 네이버페이 문서를 검색합니다.
 
-- [korean-noun-dictionary](https://github.com/NaverPayDev/agent-integration/tree/main/scripts/korean-noun-dictionary)로 구축한 명사 사전을 활용해 `llms-full.txt` 문서를 인덱싱하여 최적화된 검색 결과를 제공합니다.
+- [korean-noun-dictionary](https://github.com/NaverPayDev/agent-payments-integration/tree/main/scripts/korean-noun-dictionary)로 구축한 명사 사전을 활용해 `llms-full.txt` 문서를 인덱싱하여 최적화된 검색 결과를 제공합니다.
 
 #### 매개변수
 
@@ -90,10 +90,10 @@ pnpm start
 
 ## 기여하기
 
-버그 리포트나 기능 요청은 [GitHub Issues](https://github.com/NaverPayDev/agent-integration/issues)에 등록해 주세요.
+버그 리포트나 기능 요청은 [GitHub Issues](https://github.com/NaverPayDev/agent-payments-integration/issues)에 등록해 주세요.
 
-자세한 내용은 [CONTRIBUTING.md](https://github.com/NaverPayDev/agent-integration/blob/main/CONTRIBUTING.md)를 참조하세요.
+자세한 내용은 [CONTRIBUTING.md](https://github.com/NaverPayDev/agent-payments-integration/blob/main/CONTRIBUTING.md)를 참조하세요.
 
 ## 라이선스
 
-Apache License v2.0 - 자세한 내용은 [LICENSE](https://github.com/NaverPayDev/agent-integration/blob/main/LICENSE) 파일을 참조하세요.
+Apache License v2.0 - 자세한 내용은 [LICENSE](https://github.com/NaverPayDev/agent-payments-integration/blob/main/LICENSE) 파일을 참조하세요.
