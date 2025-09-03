@@ -7,7 +7,7 @@
         "type": "git",
         "url": "https://github.com/NaverPayDev/agent-payments-integration.git"
     },
-    "description": "AI agent integration toolkit for Npay",
+    "description": "AI agent payments integration toolkit for Npay",
     "keywords": [
         "naver",
         "npay",
