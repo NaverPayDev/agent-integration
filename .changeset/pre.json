@@ -1,0 +1,11 @@
+{
+  "mode": "pre",
+  "tag": "rc",
+  "initialVersions": {
+    "@naverpay/payments-mcp": "1.0.0",
+    "@naverpay/korean-noun-dictionary": "1.0.0"
+  },
+  "changesets": [
+    "tough-wolves-sparkle"
+  ]
+}
