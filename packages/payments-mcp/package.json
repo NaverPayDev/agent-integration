@@ -5,7 +5,7 @@
     "description": "네이버페이(Npay) Payments MCP",
     "repository": {
         "type": "git",
-        "url": "https://github.com/NaverPayDev/agent-integration.git",
+        "url": "https://github.com/NaverPayDev/agent-payments-integration.git",
         "directory": "packages/payments-mcp"
     },
     "keywords": [

@@ -6,7 +6,7 @@ Npay Agent Integration 프로젝트에 기여해 주셔서 감사합니다!
 
 ## 개발 프로세스
 
-1. **이슈 생성**: 먼저 [GitHub Issues](https://github.com/NaverPayDev/agent-integration/issues)에서 작업하려는 내용을 논의합니다.
+1. **이슈 생성**: 먼저 [GitHub Issues](https://github.com/NaverPayDev/agent-payments-integration/issues)에서 작업하려는 내용을 논의합니다.
 2. **포크 & 클론**: 저장소를 포크하고 로컬에 클론합니다.
 3. **브랜치 생성**: 기능 브랜치를 생성합니다.
 

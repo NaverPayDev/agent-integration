@@ -48,10 +48,10 @@ just clean
 
 ## 기여하기
 
-버그 리포트나 기능 요청은 [GitHub Issues](https://github.com/NaverPayDev/agent-integration/issues)에 등록해 주세요.
+버그 리포트나 기능 요청은 [GitHub Issues](https://github.com/NaverPayDev/agent-payments-integration/issues)에 등록해 주세요.
 
-자세한 내용은 [CONTRIBUTING.md](https://github.com/NaverPayDev/agent-integration/blob/main/CONTRIBUTING.md)를 참조하세요.
+자세한 내용은 [CONTRIBUTING.md](https://github.com/NaverPayDev/agent-payments-integration/blob/main/CONTRIBUTING.md)를 참조하세요.
 
 ## 라이선스
 
-Apache License v2.0 - 자세한 내용은 [LICENSE](https://github.com/NaverPayDev/agent-integration/blob/main/LICENSE) 파일을 참조하세요.
+Apache License v2.0 - 자세한 내용은 [LICENSE](https://github.com/NaverPayDev/agent-payments-integration/blob/main/LICENSE) 파일을 참조하세요.

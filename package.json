@@ -1,11 +1,11 @@
 {
-    "name": "@naverpay/agent-integration",
+    "name": "@naverpay/agent-payments-integration",
     "author": "@NaverPayDev/agent",
     "private": true,
     "license": "Apache-2.0",
     "repository": {
         "type": "git",
-        "url": "https://github.com/NaverPayDev/agent-integration.git"
+        "url": "https://github.com/NaverPayDev/agent-payments-integration.git"
     },
     "description": "AI agent integration toolkit for Npay",
     "keywords": [

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Npay agent-integration
+# Npay agent-payments-integration
 # Copyright (c) 2025-present NAVER FINANCIAL Corp.
 # Apache-2.0
 
